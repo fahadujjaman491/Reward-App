@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
-    EditText email, password;
-    Button loginBtn, registerBtn;
+    private EditText email;
+    private EditText password;
+    private Button loginBtn;
+    private Button registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,21 +25,57 @@ public class LoginActivity extends Activity {
         registerBtn = findViewById(R.id.registerBtn);
 
         loginBtn.setOnClickListener(v -> {
-            String e = email.getText().toString().trim();
-            String p = password.getText().toString().trim();
 
-            if (e.isEmpty() || p.isEmpty()) {
-                Toast.makeText(this, "Email ও Password দিন",
-                        Toast.LENGTH_SHORT).show();
+            String userEmail = email.getText().toString().trim();
+            String userPassword = password.getText().toString().trim();
+
+            if (userEmail.isEmpty()) {
+                email.setError("Email দিন");
+                email.requestFocus();
+                return;
+            }
+
+            if (userPassword.isEmpty()) {
+                password.setError("Password দিন");
+                password.requestFocus();
+                return;
+            }
+
+            // আপাতত Demo Login
+            if (userEmail.equals("test@gmail.com")
+                    && userPassword.equals("123456")) {
+
+                Toast.makeText(
+                        LoginActivity.this,
+                        "Login সফল হয়েছে",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                Intent intent = new Intent(
+                        LoginActivity.this,
+                        MainActivity.class
+                );
+
+                startActivity(intent);
+                finish();
+
             } else {
-                Toast.makeText(this, "Login সফল",
-                        Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(
+                        LoginActivity.this,
+                        "Email অথবা Password ভুল",
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         });
 
         registerBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this,
-                    RegisterActivity.class);
+
+            Intent intent = new Intent(
+                    LoginActivity.this,
+                    RegisterActivity.class
+            );
+
             startActivity(intent);
         });
     }
